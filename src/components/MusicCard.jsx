@@ -18,4 +18,9 @@ class MusicCard extends React.Component {
   }
 }
 
+MusicCard.propTypes = {
+  trackName: PropTypes.string.isRequired,
+  previewUrl: PropTypes.string.isRequired,
+};
+
 export default MusicCard;
