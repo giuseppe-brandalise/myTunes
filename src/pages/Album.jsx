@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import Loading from '../components/Loading';
@@ -44,6 +45,7 @@ class Album extends React.Component {
                 key={ music.trackName }
                 trackName={ music.trackName }
                 previewUrl={ music.previewUrl }
+                trackId={ music.trackId }
               />)) }
             </div>
           )
