@@ -1,12 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { addSong, removeSong } from '../services/favoriteSongsAPI';
+import { addSong, removeSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 class MusicCard extends React.Component {
   state = {
     favorite: false,
-    loading: false,
+    loading: true,
+  };
+
+  componentDidMount() {
+    this.getFavorite();
+  }
+
+  getFavorite = async () => {
+    const { music } = this.props;
+    const favoritesSongs = await getFavoriteSongs();
+    const isInFav = favoritesSongs
+      .filter((favMusic) => favMusic.trackId === music.trackId);
+    this.setState({
+      loading: false,
+      favorite: isInFav[0] !== undefined,
+    });
   };
 
   handlerChange = ({ target }) => {
@@ -32,25 +47,27 @@ class MusicCard extends React.Component {
     const { favorite, loading } = this.state;
     return (
       <div>
-        {loading ? <Loading /> : null}
-        <p>{ trackName }</p>
-        <audio data-testid="audio-component" src={ previewUrl } controls>
-          <track kind="captions" />
-          O seu navegador não suporta o elemento
-          {' '}
-          <code>audio</code>
-          .
-        </audio>
-        <label htmlFor="favorite">
-          <input
-            type="checkbox"
-            name="favorite"
-            id=""
-            data-testid={ `checkbox-music-${trackId}` }
-            value={ favorite }
-            onChange={ this.handlerChange }
-          />
-        </label>
+        {loading ? <Loading /> : (
+          <div>
+            <p>{ trackName }</p>
+            <audio data-testid="audio-component" src={ previewUrl } controls>
+              <track kind="captions" />
+              O seu navegador não suporta o elemento
+              {' '}
+              <code>audio</code>
+              .
+            </audio>
+            <label htmlFor="favorite">
+              <input
+                type="checkbox"
+                name="favorite"
+                id=""
+                data-testid={ `checkbox-music-${trackId}` }
+                checked={ favorite }
+                onChange={ this.handlerChange }
+              />
+            </label>
+          </div>)}
       </div>
     );
   }
