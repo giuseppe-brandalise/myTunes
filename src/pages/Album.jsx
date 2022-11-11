@@ -43,9 +43,7 @@ class Album extends React.Component {
               <img src={ album.artworkUrl100 } alt={ album.collectionName } />
               { musics.map((music) => (<MusicCard
                 key={ music.trackName }
-                trackName={ music.trackName }
-                previewUrl={ music.previewUrl }
-                trackId={ music.trackId }
+                music={ music }
               />)) }
             </div>
           )
